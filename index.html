@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaughn Grant - Proud Farmer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #ffffff;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header .date-time {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #ddd;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #2c3e50;
+            margin: 10px auto;
+            display: block;
+            object-fit: cover;
+        }
+        .btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+            width: 80%;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .christmas-btn {
+            background-color: red;
+            color: white;
+            font-size: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            animation: glowing 1.5s infinite;
+        }
+        @keyframes glowing {
+            0% { box-shadow: 0 0 5px red; }
+            50% { box-shadow: 0 0 20px yellow; }
+            100% { box-shadow: 0 0 5px red; }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        .modal-content .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .read-aloud-container {
+            margin: 20px auto;
+            text-align: center;
+            display: none;
+        }
+        textarea {
+            width: 90%;
+            max-width: 600px;
+            height: 150px;
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .read-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .read-controls button {
+            background-color: #2c3e50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .read-controls button:hover {
+            background-color: #1a2c3a;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        footer a, footer button {
+            color: #fff;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        footer a:hover, footer button:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .btn {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vaughn Grant</h1>
+        <p>Proud Farmer from Eltham, Taranaki</p>
+        <div class="date-time" id="currentDateTime"></div>
+    </header>
+    <div class="container">
+        <img src="profile.jpg" alt="Vaughn Grant" class="profile-img">
+        <p>Passionate about nature and living a connected life with it.</p>
+        <button class="btn" onclick="window.location.href='tel:0272546290'">📞 Call Me</button>
+        <button class="btn" onclick="window.location.href='sms:0272546290'">✉️ SMS Me</button>
+        <button class="christmas-btn" onclick="showChristmasModal()">🎄 Christmas Special</button>
+        <button class="btn" onclick="saveContact()">Save My Contact</button>
+        <button class="btn" onclick="toggleReadAloud()">Read Out Loud</button>
+        <div id="readAloudSection" class="read-aloud-container">
+            <textarea id="textToRead" placeholder="Copy and Paste your Text here, I will read out loud for you"></textarea>
+            <div class="read-controls">
+                <button onclick="startReadAloud()">▶️ Play</button>
+                <button onclick="pauseOrResume()">⏸️ Pause/Resume</button>
+                <button onclick="stopReadAloud()">⏹️ Stop</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <button onclick="showQrModal()">Share QR</button>
+        <a href="https://fitandfine.github.io/anup"><i class="fas fa-tools"></i>By</a>
+    </footer>
+
+    <!-- Christmas Modal -->
+    <div id="christmasModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideChristmasModal()">&times;</span>
+            <div class="confetti" id="confetti"></div>
+            <h2>🎉 Thank You Vaughn! 🎉</h2>
+            <p>Dear Vaughn, thank you for being a phenomenally hardworking and honest man. Your household is a haven where love, laughter, and creativity thrive. Under your guidance, my dreams have found wings to soar. With the highest respect for your manhood, I extend my deepest gratitude. I am blessed to be a part of this family. This is life enriching experience and much needed cultural exposure to broaden my brain. Thank you for offering everything to me as if santa assigned my duty to you this christmas. Keep shinning and keep spreading the glitters with your jokes and experiences of life. You're a jolly good buddy to hang out with. I couldn't have expected for any better christmas. May god takes cares of any son of a gun that messes with our sexy Vaughn. I am proud to be under your protection my man. Family loves you. I am making this on behalf of Emily and Myself.  <a href="https://fitandfine.github.io/anup" style="color: red;"> Your Proud Kitchen Bitch :) </a></p>
+            <button onclick="speakText('Dear Vaughn, thank you for being a phenomenally hardworking and honest man. Your household is a haven where love, laughter, and creativity thrive. Under your guidance, my dreams have found wings to soar. With the highest respect for your manhood, I extend my deepest gratitude.')">
+                <i class="fas fa-volume-up"></i> Hear It
+            </button>
+        </div>
+    </div>
+
+    <!-- QR Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideQrModal()">&times;</span>
+            <img src="qr.jpg" alt="QR Code" style="width: 100%; max-width: 200px;">
+            <p>Scan or share this QR code to save my contact details.</p>
+        </div>
+    </div>
+
+    <script>
+        function showChristmasModal() {
+            document.getElementById('christmasModal').style.display = 'flex';
+            launchConfetti();
+        }
+        function hideChristmasModal() {
+            document.getElementById('christmasModal').style.display = 'none';
+        }
+        function showQrModal() {
+            document.getElementById('qrModal').style.display = 'flex';
+        }
+        function hideQrModal() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+        function toggleReadAloud() {
+            const section = document.getElementById('readAloudSection');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('currentDateTime').innerText = now.toLocaleString();
+        }
+        setInterval(updateDateTime, 1000);
+
+        let synth = window.speechSynthesis;
+        let utterance = null;
+        function startReadAloud() {
+            const text = document.getElementById('textToRead').value;
+            utterance = new SpeechSynthesisUtterance(text);
+            synth.speak(utterance);
+        }
+        function pauseOrResume() {
+            if (synth.paused) {
+                synth.resume();
+            } else {
+                synth.pause();
+            }
+        }
+        function stopReadAloud() {
+            synth.cancel();
+        }
+        function speakText(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            synth.speak(utterance);
+        }
+
+        function launchConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            confettiContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confettiContainer.appendChild(confetti);
+            }
+        }
+        
+        function saveContact() {
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Vaughn Grant
+TEL;TYPE=CELL:0272546290
+END:VCARD`;
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'VaughnGrant.vcf';
+            link.click();
+        }
+    </script>
+</body>
+</html>
